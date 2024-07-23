@@ -1,0 +1,4 @@
+currency_a,currency_b,rate,increment_a,gold_cost
+Chaos Orb,Divine Orb, 0.01, 100, 1000
+Chaos Orb,Exalted Orb, 0.05, 20, 1000
+Exalted Orb,Divine Orb, .5, 2, 1000

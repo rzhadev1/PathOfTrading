@@ -1,0 +1,8 @@
+numpy==1.22.3
+pandas==1.4.1
+ply==3.11
+Pyomo==6.7.3
+python-dateutil==2.9.0.post0
+pytz==2024.1
+six==1.16.0
+tzdata==2024.1

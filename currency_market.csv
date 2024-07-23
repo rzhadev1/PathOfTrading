@@ -1,0 +1,183 @@
+currency_a,currency_b,rate,increment_a,gold_cost
+Chaos Orb,Exalted Orb,3,1,465
+Chaos Orb,Divine Orb,50,1,451
+Chaos Orb,Cartographer's Chisel,87,1,257
+Chaos Orb,Gemcutter's Prism,90,10,649
+Chaos Orb,Vaal Orb,95,1,661
+Chaos Orb,Regal Orb,90,10,641
+Chaos Orb,Orb of Scouring,92,1,410
+Chaos Orb,Orb of Regret,90,10,388
+Chaos Orb,Orb of Alteration,20,10,985
+Chaos Orb,Glassblower's Bauble,80,10,255
+Chaos Orb,Orb of Alchemy,63,1,959
+Chaos Orb,Orb of Fusing,19,1,679
+Chaos Orb,Jeweler's Orb,70,10,273
+Exalted Orb,Chaos Orb,69,1,894
+Exalted Orb,Divine Orb,21,1,873
+Exalted Orb,Cartographer's Chisel,82,1,461
+Exalted Orb,Gemcutter's Prism,50,10,331
+Exalted Orb,Vaal Orb,90,10,515
+Exalted Orb,Regal Orb,10,10,942
+Exalted Orb,Orb of Scouring,60,10,711
+Exalted Orb,Orb of Regret,9,1,343
+Exalted Orb,Orb of Alteration,80,10,395
+Exalted Orb,Glassblower's Bauble,38,1,337
+Exalted Orb,Orb of Alchemy,36,1,453
+Exalted Orb,Orb of Fusing,80,10,469
+Exalted Orb,Jeweler's Orb,38,1,390
+Divine Orb,Chaos Orb,100,10,629
+Divine Orb,Exalted Orb,20,10,131
+Divine Orb,Cartographer's Chisel,30,1,203
+Divine Orb,Gemcutter's Prism,90,10,277
+Divine Orb,Vaal Orb,50,10,487
+Divine Orb,Regal Orb,60,10,536
+Divine Orb,Orb of Scouring,90,10,437
+Divine Orb,Orb of Regret,35,1,510
+Divine Orb,Orb of Alteration,3,1,669
+Divine Orb,Glassblower's Bauble,90,10,411
+Divine Orb,Orb of Alchemy,50,10,446
+Divine Orb,Orb of Fusing,40,1,418
+Divine Orb,Jeweler's Orb,72,1,63
+Cartographer's Chisel,Chaos Orb,10,10,850
+Cartographer's Chisel,Exalted Orb,78,1,137
+Cartographer's Chisel,Divine Orb,30,10,647
+Cartographer's Chisel,Gemcutter's Prism,3,1,728
+Cartographer's Chisel,Vaal Orb,100,10,385
+Cartographer's Chisel,Regal Orb,90,10,39
+Cartographer's Chisel,Orb of Scouring,71,1,632
+Cartographer's Chisel,Orb of Regret,100,10,211
+Cartographer's Chisel,Orb of Alteration,90,10,203
+Cartographer's Chisel,Glassblower's Bauble,40,1,194
+Cartographer's Chisel,Orb of Alchemy,92,1,384
+Cartographer's Chisel,Orb of Fusing,100,10,104
+Cartographer's Chisel,Jeweler's Orb,13,1,403
+Gemcutter's Prism,Chaos Orb,10,1,575
+Gemcutter's Prism,Exalted Orb,25,1,84
+Gemcutter's Prism,Divine Orb,30,10,380
+Gemcutter's Prism,Cartographer's Chisel,10,10,699
+Gemcutter's Prism,Vaal Orb,85,1,859
+Gemcutter's Prism,Regal Orb,73,1,598
+Gemcutter's Prism,Orb of Scouring,17,1,459
+Gemcutter's Prism,Orb of Regret,70,1,196
+Gemcutter's Prism,Orb of Alteration,25,1,579
+Gemcutter's Prism,Glassblower's Bauble,30,10,414
+Gemcutter's Prism,Orb of Alchemy,12,1,169
+Gemcutter's Prism,Orb of Fusing,11,1,270
+Gemcutter's Prism,Jeweler's Orb,40,10,262
+Vaal Orb,Chaos Orb,90,10,355
+Vaal Orb,Exalted Orb,97,1,793
+Vaal Orb,Divine Orb,29,1,339
+Vaal Orb,Cartographer's Chisel,80,1,750
+Vaal Orb,Gemcutter's Prism,9,1,656
+Vaal Orb,Regal Orb,80,10,3
+Vaal Orb,Orb of Scouring,60,10,463
+Vaal Orb,Orb of Regret,1,1,778
+Vaal Orb,Orb of Alteration,30,10,360
+Vaal Orb,Glassblower's Bauble,90,10,205
+Vaal Orb,Orb of Alchemy,51,1,60
+Vaal Orb,Orb of Fusing,60,10,637
+Vaal Orb,Jeweler's Orb,30,10,209
+Regal Orb,Chaos Orb,64,1,62
+Regal Orb,Exalted Orb,52,1,743
+Regal Orb,Divine Orb,20,10,936
+Regal Orb,Cartographer's Chisel,30,10,277
+Regal Orb,Gemcutter's Prism,16,1,648
+Regal Orb,Vaal Orb,40,10,607
+Regal Orb,Orb of Scouring,60,10,216
+Regal Orb,Orb of Regret,47,1,60
+Regal Orb,Orb of Alteration,50,10,35
+Regal Orb,Glassblower's Bauble,54,1,822
+Regal Orb,Orb of Alchemy,99,1,309
+Regal Orb,Orb of Fusing,91,1,671
+Regal Orb,Jeweler's Orb,32,1,34
+Orb of Scouring,Chaos Orb,6,1,755
+Orb of Scouring,Exalted Orb,40,10,517
+Orb of Scouring,Divine Orb,74,1,810
+Orb of Scouring,Cartographer's Chisel,98,1,903
+Orb of Scouring,Gemcutter's Prism,50,10,323
+Orb of Scouring,Vaal Orb,60,10,554
+Orb of Scouring,Regal Orb,53,1,619
+Orb of Scouring,Orb of Regret,50,10,174
+Orb of Scouring,Orb of Alteration,53,1,88
+Orb of Scouring,Glassblower's Bauble,60,10,999
+Orb of Scouring,Orb of Alchemy,20,10,555
+Orb of Scouring,Orb of Fusing,90,10,709
+Orb of Scouring,Jeweler's Orb,20,10,856
+Orb of Regret,Chaos Orb,50,10,314
+Orb of Regret,Exalted Orb,30,10,259
+Orb of Regret,Divine Orb,30,10,842
+Orb of Regret,Cartographer's Chisel,90,10,966
+Orb of Regret,Gemcutter's Prism,60,10,974
+Orb of Regret,Vaal Orb,47,1,338
+Orb of Regret,Regal Orb,70,10,350
+Orb of Regret,Orb of Scouring,85,1,742
+Orb of Regret,Orb of Alteration,20,10,43
+Orb of Regret,Glassblower's Bauble,44,1,960
+Orb of Regret,Orb of Alchemy,40,10,483
+Orb of Regret,Orb of Fusing,60,1,691
+Orb of Regret,Jeweler's Orb,100,10,110
+Orb of Alteration,Chaos Orb,38,1,525
+Orb of Alteration,Exalted Orb,74,1,96
+Orb of Alteration,Divine Orb,8,1,319
+Orb of Alteration,Cartographer's Chisel,10,10,77
+Orb of Alteration,Gemcutter's Prism,43,1,149
+Orb of Alteration,Vaal Orb,30,10,392
+Orb of Alteration,Regal Orb,70,10,593
+Orb of Alteration,Orb of Scouring,33,1,512
+Orb of Alteration,Orb of Regret,48,1,957
+Orb of Alteration,Glassblower's Bauble,80,10,807
+Orb of Alteration,Orb of Alchemy,14,1,550
+Orb of Alteration,Orb of Fusing,56,1,374
+Orb of Alteration,Jeweler's Orb,31,1,478
+Glassblower's Bauble,Chaos Orb,27,1,457
+Glassblower's Bauble,Exalted Orb,65,1,513
+Glassblower's Bauble,Divine Orb,42,1,182
+Glassblower's Bauble,Cartographer's Chisel,12,1,165
+Glassblower's Bauble,Gemcutter's Prism,70,10,181
+Glassblower's Bauble,Vaal Orb,50,10,326
+Glassblower's Bauble,Regal Orb,23,1,800
+Glassblower's Bauble,Orb of Scouring,73,1,859
+Glassblower's Bauble,Orb of Regret,20,10,555
+Glassblower's Bauble,Orb of Alteration,70,10,980
+Glassblower's Bauble,Orb of Alchemy,90,10,928
+Glassblower's Bauble,Orb of Fusing,81,1,609
+Glassblower's Bauble,Jeweler's Orb,30,10,540
+Orb of Alchemy,Chaos Orb,40,10,386
+Orb of Alchemy,Exalted Orb,69,1,440
+Orb of Alchemy,Divine Orb,73,1,799
+Orb of Alchemy,Cartographer's Chisel,90,10,932
+Orb of Alchemy,Gemcutter's Prism,70,10,114
+Orb of Alchemy,Vaal Orb,54,1,347
+Orb of Alchemy,Regal Orb,99,1,21
+Orb of Alchemy,Orb of Scouring,59,1,46
+Orb of Alchemy,Orb of Regret,40,10,77
+Orb of Alchemy,Orb of Alteration,75,1,344
+Orb of Alchemy,Glassblower's Bauble,60,10,352
+Orb of Alchemy,Orb of Fusing,50,10,780
+Orb of Alchemy,Jeweler's Orb,96,1,358
+Orb of Fusing,Chaos Orb,26,1,895
+Orb of Fusing,Exalted Orb,30,10,65
+Orb of Fusing,Divine Orb,28,1,822
+Orb of Fusing,Cartographer's Chisel,20,10,717
+Orb of Fusing,Gemcutter's Prism,30,10,514
+Orb of Fusing,Vaal Orb,100,10,300
+Orb of Fusing,Regal Orb,90,10,758
+Orb of Fusing,Orb of Scouring,90,10,22
+Orb of Fusing,Orb of Regret,15,1,894
+Orb of Fusing,Orb of Alteration,54,1,245
+Orb of Fusing,Glassblower's Bauble,12,1,46
+Orb of Fusing,Orb of Alchemy,70,10,688
+Orb of Fusing,Jeweler's Orb,19,1,852
+Jeweler's Orb,Chaos Orb,60,10,903
+Jeweler's Orb,Exalted Orb,70,10,606
+Jeweler's Orb,Divine Orb,30,10,943
+Jeweler's Orb,Cartographer's Chisel,50,10,371
+Jeweler's Orb,Gemcutter's Prism,10,10,317
+Jeweler's Orb,Vaal Orb,60,10,626
+Jeweler's Orb,Regal Orb,27,1,546
+Jeweler's Orb,Orb of Scouring,100,10,9
+Jeweler's Orb,Orb of Regret,75,1,827
+Jeweler's Orb,Orb of Alteration,70,10,704
+Jeweler's Orb,Glassblower's Bauble,87,1,829
+Jeweler's Orb,Orb of Alchemy,52,1,210
+Jeweler's Orb,Orb of Fusing,33,1,570
