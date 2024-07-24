@@ -1,5 +1,5 @@
-numpy==1.22.3
-pandas==1.4.1
+numpy==1.22.4
+pandas==2.2
 ply==3.11
 Pyomo==6.7.3
 python-dateutil==2.9.0.post0

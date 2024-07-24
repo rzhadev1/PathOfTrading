@@ -24,4 +24,3 @@ currency_a, currency_b, rate, increment_a, (qty_a, qty_b)
 where increment_a is the trade size increment of currency_a, qty_b is the amount of currency_b that is available at the given rate
 
 # TODO
-A -> B has the ratio 2:3. This implies a going unit rate of 1:1.5, the trade increment is 2. 
