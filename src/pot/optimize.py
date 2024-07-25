@@ -1,5 +1,7 @@
 """
-The model borrows heavily from the following resource: 
+A mixed integer linear optimization for finding currency mispricings in the path of exile currency exchange.
+
+This model borrows heavily from the following resource: 
 https://mobook.github.io/MO-book/notebooks/04/05-cryptocurrency-arbitrage.html#pyomo-model-for-arbitrage-with-capacity-constraints
 """
 
@@ -7,8 +9,9 @@ import pyomo.environ as pyo
 import pandas as pd
 import networkx as nx
 import numpy as np
-import math
-from monad import PyomoMonad, Solver
+
+from .exceptions import NonIntegerStock, NonIntegerTotal
+from .monad import PyomoMonad, Solver
 
 def order_book_to_digraph(order_book : pd.DataFrame):
     graph = nx.MultiDiGraph()
@@ -22,16 +25,30 @@ def order_book_to_digraph(order_book : pd.DataFrame):
         ratio = order_book.at[order, "ratio"]
         gold_cost = order_book.at[order, "gold_cost"]
 
-        # the maximum amount we can convert
-        capacity = stock / ratio
+        # the maximum amount of src we can convert
+        capacity = stock
 
         # find the minimum increment that this trade can occur at 
         # note that this is because partial orders are allowed
-        full_trade_dst = int(ratio * stock)
-        full_trade_src = int(stock)
+ 
+        full_trade_dst = stock * ratio
+        full_trade_src = stock
+
+        # make sure that both of these are correctly integers
+        # the problem will be infeasible if they arent
+        if full_trade_dst == int(full_trade_dst):
+            full_trade_dst = int(full_trade_dst)
+        else:
+            raise NonIntegerTotal("Order must have an integer quantity of want currency.")
         
+        if full_trade_src == int(full_trade_src):
+            full_trade_src = int(full_trade_src)
+        else:
+            raise NonIntegerStock("Order must have an integer quantity of have currency.")
+
         # number of possible partial orders
-        increments = math.gcd(full_trade_dst, full_trade_src)
+        increments = np.gcd(full_trade_dst, full_trade_src)
+
         # the minimum increment of each trade for the source currency
         min_inc_src = full_trade_src / increments
 
@@ -46,7 +63,7 @@ def order_book_to_digraph(order_book : pd.DataFrame):
 
     return graph
 
-def optimal_conversion(order_book_graph : nx.MultiDiGraph, from_currency : str, to_currency : str, 
+def optimal_conversion(order_book_graph : nx.MultiDiGraph, from_currency : str, to_currency : str,
                        from_currency_qty : int, num_trades: int, init_gold : int):
     
     m = pyo.ConcreteModel()
@@ -74,7 +91,6 @@ def optimal_conversion(order_book_graph : nx.MultiDiGraph, from_currency : str, 
     # gold at each time step
     m.g = pyo.Var(m.T0, domain=pyo.NonNegativeReals)
 
-    # "multiplier" on each trading edge
     @m.Param(m.EDGES)
     def a(m, src, dst, idx):
         return order_book_graph.edges[(src, dst, idx)]["a"]
@@ -140,14 +156,17 @@ def optimal_conversion(order_book_graph : nx.MultiDiGraph, from_currency : str, 
         return m.g[t] == m.g[t - 1] - out_gold
 
     # return both the optimal amount of wealth we can get, and the 
-    # series of trades we should make
+    # series of trades made
     def report(m):
-        return m.wealth()
+        trades = []
+        for t in m.T1:
+            for src, dst, idx in m.EDGES:
+                a = m.a[src, dst, idx]
+                if m.x[src, dst, idx, t]() > 1e-6:
+                    have_qty = m.x[src, dst, idx, t]()
+                    want_qty = have_qty * a
+                    trades.append({'have': src, 'want': dst, 'have_qty' : have_qty, 'want_qty' : want_qty}) 
+
+        return m.wealth(), pd.DataFrame(trades)
 
     return PyomoMonad(m, effect=report)
-
-if __name__ == '__main__':
-    df = pd.read_csv('currency_market.csv')
-    dg = order_book_to_digraph(df)
-    wealth = (optimal_conversion(dg, 'Chaos Orb', 'Divine Orb', 200, 10, 100000) >> Solver('appsi_highs'))()
-    print(wealth)

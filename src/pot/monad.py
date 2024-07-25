@@ -43,6 +43,7 @@ class PyomoMonad:
             return PyomoMonad(result, self.effect, self.status)
 
         except Exception as e:
+            print(e)
             return PyomoMonad(None, lambda value: print(self.status), status=e)
 
     def __call__(self):
@@ -69,7 +70,9 @@ class PyomoMonad:
 def Solver(s=None):
     """ Given a string solver name, try to create a pyomo.environ.SolverFactory solver. """
     if s is None:
-        _solver = lambda model : model.clone()
+        def func(model):
+            return model.clone()
+        _solver = func
     else:
         def _solver(model):
             new_model = model.clone()
