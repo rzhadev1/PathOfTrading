@@ -45,7 +45,7 @@ To model the gold constraint, we use a variable $g(t)$ which represents the tota
 }
 ```
 
-The constraints (1,2) set initial conditions . Constraint (3) enforces that trades occur in discrete (possibly partial) orders. Constraint (4,5) enforce proper balances after trades are made w.r.t to currencies and hold. Constraint (6) enforces no shorting. Constraint (7) enforces that we consider the stock of each order in the order book.  
+The constraints (1,2) set initial conditions. Constraint (3) enforces that trades occur in discrete (possibly partial) orders. Constraint (4,5) enforce proper balances after trades are made w.r.t to currencies and hold. Constraint (6) enforces no shorting. Constraint (7) enforces that we consider the stock of each order in the order book.  
 
 ## Usage 
 ```
