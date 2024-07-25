@@ -28,8 +28,7 @@ To model the gold constraint, we use a variable $g(t)$ which represents the tota
 
 ### Currency Arbitrage Model
 $$
-\begin{equation}
-\begin{aligned}
+\eqalign{
 \max_{x,v,g,p,z} \quad & v_{want}(T)\\
 \textrm{s.t.} 
 \quad & v_{have}(0) = v_0\\
@@ -42,8 +41,7 @@ $$
 \quad & z_{j,k} \leq c_{j,k} & \forall (j,k) \in E, t \in T\\
 \quad & v_{j}(t), x_{i,j}(t), z_{i,j}, g(t) \geq 0 & \\
 \quad & p_{i,j}(t) \in \mathbb{Z}^{\geq 0}
-\end{aligned}
-\end{equation}
+}
 $$
 The constraints (1,2) set initial conditions . Constraint (3) enforces that trades occur in discrete (possibly partial) orders. Constraint (4,5) enforce proper balances after trades are made w.r.t to currencies and hold. Constraint (6) enforces no shorting. Constraint (7) enforces that we consider the stock of each order in the order book.  
 
