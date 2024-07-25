@@ -46,5 +46,5 @@ if sol is None:
 
 else:
     opt, trades = sol()
-    print(f'Optimal {args.want_curr}: {opt}')
+    print(f'Optimal # of {args.want_curr}: {opt}')
     print(trades)

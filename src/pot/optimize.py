@@ -17,21 +17,20 @@ def order_book_to_digraph(order_book : pd.DataFrame):
     graph = nx.MultiDiGraph()
 
     for order in order_book.index:
-        src = order_book.at[order, "have"]
-        dst = order_book.at[order, "want"]
+        dst = order_book.at[order, "have"]
+        src = order_book.at[order, "want"]
         stock = order_book.at[order, "stock"]
 
-        # the *unit* price in terms of want: have (1)
+        # the *unit* price of want in terms of have (want / have)
         ratio = order_book.at[order, "ratio"]
         gold_cost = order_book.at[order, "gold_cost"]
 
-        # the maximum amount of src we can convert
-        capacity = stock
+        # the maximum amount of want we can convert
+        capacity = round(stock * ratio)
 
         # find the minimum increment that this trade can occur at 
         # note that this is because partial orders are allowed
- 
-        full_trade_dst = stock * ratio
+        full_trade_dst = capacity
         full_trade_src = stock
 
         # make sure that both of these are correctly integers
@@ -50,12 +49,12 @@ def order_book_to_digraph(order_book : pd.DataFrame):
         increments = np.gcd(full_trade_dst, full_trade_src)
 
         # the minimum increment of each trade for the source currency
-        min_inc_src = full_trade_src / increments
+        min_inc_src = full_trade_dst / increments
 
         graph.add_edge(
             src,
             dst,
-            a=ratio,
+            a=1/ratio,
             capacity=capacity,
             gold_cost=gold_cost,
             min_inc=min_inc_src
