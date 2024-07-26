@@ -10,8 +10,10 @@ The arbitrage problem is a special case of the currency conversion problem, with
 ## Inputs
 The model assumes input in the form of a .csv file which represents the entire order book of the currency market. Each order specifies a starting currency (called have), an ending currency (called want), a specified ratio of $\frac{want}{have}$ that prices the have currency in terms of want currency, *stock* representing the quantity of the have currency, and a gold cost per each transaction. 
 
+See the example section for a sample input. 
+
 ## Model
-The currency exchange appears to be similar to real life forex/cryptocurrency markets. A few main differences exist: 
+The currency exchange is similar to real life forex/cryptocurrency markets. A few main differences exist: 
 - The currency exchange requires *gold*, a new auxiliary currency, to trade. Gold is earned by playing the game, and is a discrete quantity. 
 - No fractional trading exists because whole items are transacted (while there are splinters/shards, these would still represent discrete increments in currency). 
 - There is currently a limit of 10 ongoing trades available at one time. 
