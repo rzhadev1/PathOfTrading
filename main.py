@@ -19,8 +19,11 @@ parser.add_argument('--havecurrencyqty', '-hqty', type=int, default=100, dest='h
 parser.add_argument('--wantcurrency', '-want', type=str, default='Divine Orb', dest='want_curr', action='store',
                     help='string name of currency that is converted to.')
 
-parser.add_argument('--numtrades', '-t', type=int, default=10, dest='num_trades',action='store', 
-                    help='number of trades that can be made.')
+parser.add_argument('--timesteps', '-t', type=int, default=10, dest='timesteps',action='store', 
+                    help='number of timesteps.')
+
+parser.add_argument('--window', '-w', type=int, default=10, dest='window',action='store', 
+                    help='number of trades that can be made in the same time step.')
 
 parser.add_argument('--startgold', '-g', type=int, default=1000000, dest='start_gold', action='store',
                     help='starting amount of gold.')
@@ -31,12 +34,13 @@ parser.add_argument('--solver', '-s', type=str, default='appsi_highs', dest='sol
 args = parser.parse_args()
 df = pd.read_csv(args.order_book)
 market_graph = order_book_to_digraph(df)
+from_portfolio = {args.have_curr : args.have_curr_qty}
 sol = (optimal_conversion(
     market_graph, 
-    args.have_curr, 
+    from_portfolio,
     args.want_curr, 
-    args.have_curr_qty, 
     args.num_trades, 
+    args.window,
     args.start_gold
 ) >> Solver(args.solver))
 

@@ -10,10 +10,11 @@ import pandas as pd
 import networkx as nx
 import numpy as np
 
-from .exceptions import NonIntegerStock, NonIntegerTotal
+from .exceptions import NonIntegerQuantity
 from .monad import PyomoMonad, Solver
 
 def order_book_to_digraph(order_book : pd.DataFrame):
+    """ Convert a pandas dataframe representation of the market into a directed graph. """
     graph = nx.MultiDiGraph()
 
     for order in order_book.index:
@@ -38,18 +39,18 @@ def order_book_to_digraph(order_book : pd.DataFrame):
         if full_trade_dst == int(full_trade_dst):
             full_trade_dst = int(full_trade_dst)
         else:
-            raise NonIntegerTotal("Order must have an integer quantity of want currency.")
+            raise NonIntegerQuantity("Order must have an integer quantity of want currency.")
         
         if full_trade_src == int(full_trade_src):
             full_trade_src = int(full_trade_src)
         else:
-            raise NonIntegerStock("Order must have an integer quantity of have currency.")
+            raise NonIntegerQuantity("Order must have an integer quantity of have currency.")
 
         # number of possible partial orders
         increments = np.gcd(full_trade_dst, full_trade_src)
 
         # the minimum increment of each trade for the source currency
-        min_inc_src = full_trade_dst / increments
+        min_inc_sz_src = full_trade_dst / increments
 
         graph.add_edge(
             src,
@@ -57,19 +58,32 @@ def order_book_to_digraph(order_book : pd.DataFrame):
             a=1/ratio,
             capacity=capacity,
             gold_cost=gold_cost,
-            min_inc=min_inc_src
+            min_inc_sz=min_inc_sz_src,
+            partials=increments
         )
 
     return graph
 
-def optimal_conversion(order_book_graph : nx.MultiDiGraph, from_currency : str, to_currency : str,
-                       from_currency_qty : int, num_trades: int, init_gold : int):
-    
+def optimal_conversion(order_book_graph : nx.MultiDiGraph, from_portfolio : dict, to_currency : str,
+                       timesteps: int, window: int, init_gold : int):
+    """ Find the optimal conversion from a from_portfolio of currencies into an ending currency. 
+    :param order_book_graph: a directed graph representation of the order book. 
+    :param from_portfolio: a dictionary containing (from_currency, from_currency_quantity) pairs. 
+    :param to_currency: a string specifying the desired ending currency
+    :param timesteps: the number of timesteps allowed
+    :param init_gold: the amount of starting gold
+    :param window: the number of available spaces in the trading window
+    """
+
+    for key in from_portfolio.keys():
+        if from_portfolio[key] != int(from_portfolio[key]):
+            raise NonIntegerQuantity("Non integer starting portfolio. ")
+
     m = pyo.ConcreteModel()
 
     # length of the trading chain
-    m.T0 = pyo.RangeSet(0, num_trades)
-    m.T1 = pyo.RangeSet(1, num_trades)
+    m.T0 = pyo.RangeSet(0, timesteps)
+    m.T1 = pyo.RangeSet(1, timesteps)
 
     # currency nodes and trading edges
     m.NODES = pyo.Set(initialize=list(order_book_graph.nodes))
@@ -81,8 +95,14 @@ def optimal_conversion(order_book_graph : nx.MultiDiGraph, from_currency : str, 
     # amount traded on each edge at each trade
     m.x = pyo.Var(m.EDGES, m.T1, domain=pyo.NonNegativeReals)
 
+    # boolean indicating if a trade was made
+    m.b = pyo.Var(m.EDGES, m.T1, domain=pyo.Binary)
+
     # the number of partial orders on each trade
     m.p = pyo.Var(m.EDGES, m.T1, domain=pyo.NonNegativeIntegers)
+
+    # auxiliary so that we can linearize b * p
+    m.lin_bp = pyo.Var(m.EDGES, m.T1, domain=pyo.NonNegativeIntegers)
 
     # total amount traded on each edge over all trades
     m.z = pyo.Var(m.EDGES, domain=pyo.NonNegativeReals)
@@ -90,17 +110,25 @@ def optimal_conversion(order_book_graph : nx.MultiDiGraph, from_currency : str, 
     # gold at each time step
     m.g = pyo.Var(m.T0, domain=pyo.NonNegativeReals)
 
+    # the conversion ratio from src -> dst
     @m.Param(m.EDGES)
     def a(m, src, dst, idx):
         return order_book_graph.edges[(src, dst, idx)]["a"]
 
+    # the # of src that is convertable to dst on this trade 
     @m.Param(m.EDGES)
     def c(m, src, dst, idx):
         return order_book_graph.edges[(src, dst, idx)]["capacity"]
 
+    # the minimum increment size of a partial order for src -> dst conversion
     @m.Param(m.EDGES)
-    def min_inc(m, src, dst, idx):
-        return order_book_graph.edges[(src, dst, idx)]["min_inc"]
+    def min_inc_sz(m, src, dst, idx):
+        return order_book_graph.edges[(src, dst, idx)]["min_inc_sz"]
+    
+    # the number of partial orders for a src -> dst conversion
+    @m.Param(m.EDGES)
+    def partials(m, src, dst, idx):
+        return order_book_graph.edges[(src, dst, idx)]["partials"]
     
     @m.Param(m.EDGES)
     def gold_cost(m, src, dst, idx):
@@ -108,12 +136,31 @@ def optimal_conversion(order_book_graph : nx.MultiDiGraph, from_currency : str, 
 
     @m.Objective(sense=pyo.maximize)
     def wealth(m):
-        return m.v[to_currency, num_trades]
+        return m.v[to_currency, timesteps]
+    
+    # the following 4 constraints linearize b * p using the aux. variable lin_bp
+    @m.Constraint(m.EDGES, m.T1)
+    def upper_bd_prod(m, src, dst, idx, t):
+        return m.lin_bp[src, dst, idx, t] <= m.b[src, dst, idx, t] * m.partials[src, dst, idx]
     
     @m.Constraint(m.EDGES, m.T1)
-    def integral_trades(m, src, dst, idx, t):
-        return m.x[src, dst, idx, t] == m.p[src, dst, idx, t] * m.min_inc[src, dst, idx]
+    def lower_bd_prod(m, src, dst, idx, t):
+        return m.lin_bp[src, dst, idx, t] >= m.p[src, dst, idx, t] - (1 - m.b[src, dst, idx, t]) * m.partials[src, dst, idx]
     
+    @m.Constraint(m.EDGES, m.T1)
+    def lin_bp_lower(m, src, dst, idx, t):
+        return m.lin_bp[src, dst, idx, t] >= 0 
+
+    @m.Constraint(m.EDGES, m.T1)
+    def lin_bp_upper(m, src, dst, idx, t):
+        return m.lin_bp[src, dst, idx, t] <= m.p[src, dst, idx, t] 
+
+    # trades must occur in multiples of partial orders
+    @m.Constraint(m.EDGES, m.T1)
+    def integral_trades(m, src, dst, idx, t):
+        return m.x[src, dst, idx, t] == m.lin_bp[src, dst, idx, t] * m.min_inc_sz[src, dst, idx]
+    
+    # we cannot over trade a given order
     @m.Constraint(m.EDGES)
     def total_traded(m, src, dst, idx):
         return m.z[src, dst, idx] == sum([m.x[src, dst, idx, t] for t in m.T1])
@@ -122,16 +169,18 @@ def optimal_conversion(order_book_graph : nx.MultiDiGraph, from_currency : str, 
     def edge_capacity(m, src, dst, idx):
         return m.z[src, dst, idx] <= m.c[src, dst, idx]
 
+    # initial conditions
     @m.Constraint(m.NODES)
     def initial(m, node):
-        if node == from_currency:
-            return m.v[node, 0] == from_currency_qty
+        if node in from_portfolio.keys():
+            return m.v[node, 0] == from_portfolio[node]
         return m.v[node, 0] == 0
 
     @m.Constraint()
     def initial_gold(m):
         return m.g[0] == init_gold
 
+    # positions must stay nonnegative
     @m.Constraint(m.NODES, m.T1)
     def no_shorting(m, node, t):
         out_nodes = [(dst, idx) for src, dst, idx in m.EDGES if src == node]
@@ -153,7 +202,13 @@ def optimal_conversion(order_book_graph : nx.MultiDiGraph, from_currency : str, 
             m.p[src, dst, idx, t] * m.gold_cost[src, dst, idx] for src, dst, idx, in m.EDGES
         )
         return m.g[t] == m.g[t - 1] - out_gold
-
+    
+    # cannot have more than window size number of trades at the same time step
+    @m.Constraint(m.T1)
+    def window_size(m, t):
+        num_trades = sum(m.b[src, dst, idx, t] for src, dst, idx in m.EDGES)
+        return num_trades <= window
+    
     # return both the optimal amount of wealth we can get, and the 
     # series of trades made
     def report(m):
@@ -164,7 +219,7 @@ def optimal_conversion(order_book_graph : nx.MultiDiGraph, from_currency : str, 
                 if m.x[src, dst, idx, t]() > 1e-6:
                     have_qty = m.x[src, dst, idx, t]()
                     want_qty = have_qty * a
-                    trades.append({'have': src, 'want': dst, 'have_qty' : have_qty, 'want_qty' : want_qty}) 
+                    trades.append({'timestep': t, 'have': src, 'want': dst, 'have_qty' : have_qty, 'want_qty' : want_qty}) 
 
         return m.wealth(), pd.DataFrame(trades)
 
