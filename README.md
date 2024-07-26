@@ -1,5 +1,5 @@
 # Path of Trading (PoT)
-Modeling PoE currency markets.
+PoE currency markets 
 
 ## Background
 Currently, the model explores two main use cases: 
