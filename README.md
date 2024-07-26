@@ -1,8 +1,7 @@
 # Path of Trading (PoT)
 PoE currency markets 
 
-## Background
-Currently, the model explores two main use cases: 
+## Use cases
 - Arbitraging cross currency exchange rates: finding a sequence of trades that starts and ends at the same currency resulting in a net increase in wealth. 
 
 - Optimal currency conversion: finding a sequence of trades that optimally converts a given amount of starting currency into a desired currency.
