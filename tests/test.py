@@ -11,7 +11,7 @@ if __name__ == '__main__':
         'Chaos Orb': 100,
         'Exalted Orb' : 50,
     }
-    monad = optimal_conversion(dg, from_portfolio, 'Divine Orb', 3, 10, 100000) >> Solver('appsi_highs')
+    monad = optimal_conversion(dg, from_portfolio, 'Divine Orb', 3, 5, 100000) >> Solver('appsi_highs')
 
     if monad is not None:
         wealth, trades = monad()
