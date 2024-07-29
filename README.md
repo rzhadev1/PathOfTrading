@@ -27,15 +27,11 @@ To model the gold constraint, we use a variable $g(t)$ which represents the tota
 To model the trading window, introduce a new binary variable called $b_{i,j}(t)$ which indicates if a trade was made on the $(i,j)$ edge at time step $t$. We will restrict the sum of $b_{i,j}(t)$ for a given $t$ to be at most the window size. 
 
 The following construction results in a constraint that any trade made on $i,j$ at time $t$ is thus $x_{i,j}(t) = p_{i,j}(t) * b_{i,j}(t) * inc_{i,j}$. Note that this product results in a non-linear constraint, so we linearize as follows, using the big-M technique: use a new auxiliary variable $l$, and let $M_{i,j}=p_{i,j,max}$, where $M$ is the maximum number of partial orders possible. Then, 
-$$
-l_{i,j}(t) = \begin{cases}
-p_{i,j}(t) & \text{if } b_{i,j}(t) = 1 \\
-0 & \text{if } b_{i,j}(t) = 0
-\end{cases}
-$$
+- $l_{i,j}(t) = p_{i,j}(t)$ if $b_{i,j}(t) = 1$
+- $l_{i,j}(t) = 0$ if $b_{i,j}(t) = 0$
 
-Naturally, we have that $l_{i,j}(t) \leq M_{i,j}$, and $l_{i,j} \geq 0$.
-
+We can then write 
+$$x_{i,j}(t) = l_{i,j}(t) * inc_{i,j}$$
 ### Currency Arbitrage Model
 
 ```math
