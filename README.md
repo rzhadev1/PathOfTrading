@@ -30,7 +30,9 @@ The following construction results in a constraint that any trade made on $i,j$ 
 - $l_{i,j}(t) = p_{i,j}(t)$ if $b_{i,j}(t) = 1$
 - $l_{i,j}(t) = 0$ if $b_{i,j}(t) = 0$
 
+
 We can then write 
+
 $$x_{i,j}(t) = l_{i,j}(t) * inc_{i,j}$$
 ### Currency Arbitrage Model
 
