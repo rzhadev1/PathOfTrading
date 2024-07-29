@@ -49,9 +49,9 @@ $$x_{i,j}(t) = l_{i,j}(t) * inc_{i,j}$$
 \quad & \sum_{t=1}^{T} x_{j,k}(t) = z_{i,j} & \forall (j,k) \in E \\
 \quad & z_{j,k} \leq c_{j,k} & \forall (j,k) \in E, t \in T\\
 \quad & l_{i,j}(t) \leq b_{i,j}(t) * M_{i,j}\\
-\quad & l \geq p_{i,j}(t) - (1 - b_{i,j}(t)) * M\\ 
-\quad & l \geq 0 \\ 
-\quad & l \leq p_{i,j}(t)\\
+\quad & l_{i,j}(t) \geq p_{i,j}(t) - (1 - b_{i,j}(t)) * M\\ 
+\quad & l_{i,j}(t) \geq 0 \\ 
+\quad & l_{i,j}(t) \leq p_{i,j}(t)\\
 \quad & v_{j}(t), x_{i,j}(t), z_{i,j}, g(t) \geq 0 & \\
 \quad & p_{i,j}(t) \in \mathbb{Z}^{\geq 0}
 }
