@@ -24,7 +24,7 @@ To model no fractional trading, we introduce a variable called $p_{i,j}(t)$ deno
 
 To model the gold constraint, we use a variable $g(t)$ which represents the total amount of gold remaining at time $t$. Gold is lost when performing a trade $(i,j)$ with unit gold cost $cost_{i,j}$ per partial order. Because one cannot earn gold by transacting in the market, gold strictly decreases as more transactions are made. 
 
-To model the trading window, introduce a new binary variable called $b_{i,j}(t)$ which indicates if a trade was made on the $(i,j)$ edge at time step $t$. We will restrict the sum of $b_{i,j}(t)$ for a given $t$ to be at most the window size. 
+To model the trading window, introduce a new binary variable called $b_{i,j}(t)$ which indicates if a trade was made on the $(i,j)$ edge at time step $t$. We will restrict the sum of $b_{i,j}(t)$ for a given $t$ to be at most the $W$, the window size.  
 
 The following construction results in a constraint that any trade made on $i,j$ at time $t$ is thus $x_{i,j}(t) = p_{i,j}(t) * b_{i,j}(t) * inc_{i,j}$. Note that this product results in a non-linear constraint, so we linearize as follows, using the big-M technique: use a new auxiliary variable $l$, and let $M_{i,j}=p_{i,j,max}$, where $M$ is the maximum number of partial orders possible. Then, 
 - $l_{i,j}(t) = p_{i,j}(t)$ if $b_{i,j}(t) = 1$
@@ -52,6 +52,7 @@ $$x_{i,j}(t) = l_{i,j}(t) * inc_{i,j}$$
 \quad & l_{i,j}(t) \geq p_{i,j}(t) - (1 - b_{i,j}(t)) * M\\ 
 \quad & l_{i,j}(t) \geq 0 \\ 
 \quad & l_{i,j}(t) \leq p_{i,j}(t)\\
+\quad & \sum_{t=1}^{T} b_{i,j} \leq W\\
 \quad & v_{j}(t), x_{i,j}(t), z_{i,j}, g(t) \geq 0 & \\
 \quad & p_{i,j}(t) \in \mathbb{Z}^{\geq 0}
 }
